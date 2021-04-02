@@ -132,7 +132,7 @@ app.get('/formdata/getData', (req,res)=>{
         .then(user => {
             if(!user) {
                 return res.status(404).send({
-                    message: "user not found with id " + req.params.name
+                    message: "user not found with name " + req.params.name
                 });
             }
             res.send({message: "user deleted successfully!"});

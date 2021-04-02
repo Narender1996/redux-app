@@ -12,8 +12,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = Dispatch => {
   return {
-    Adduser: (data) => Dispatch(submitFormData(data)),
-    
+    Adduser: (data) => Dispatch(submitFormData(data))
   }
 }
 function Signup(props ) {
@@ -38,26 +37,21 @@ function Signup(props ) {
     // let {namr,vale}=event.target;
     setState({ ...state, [nam]: val });
   }
-
   const onSubmit = (event) => {
     event.preventDefault();
     const { Name, Email, Address, Password1, Password2 } = state;
     console.log('enter data', state)
     props.Adduser({ Name, Email, Address, Password1, Password2 } );
-    //  history.push('/login')
-
+    history.push('/login')
   }
-
   return (
     <div>
       <Navbar />
       {console.log(state)}
       <h1>Signup Form</h1>
-
       <form onSubmit={onSubmit}>
-
-        <h1> welcome {props.sigupRes.reg_res}</h1>
-        Name:
+      <h1> welcome {props.sigupRes.reg_res}</h1>
+            Name:
             <input type="text" name="Name" value={state.Name} onChange={inputchange} required={true}></input><br></br>
             Email:
             <input type="text" name="Email" value={state.Email} onChange={inputchange} required={true}></input><br></br>

@@ -1,66 +1,72 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 import Navbar from './Navbar'
-// import { connect } from 'react-redux'
+import { connect } from 'react-redux'
+import { getData } from '../Redux/counter/counter.action'
+// import { useHistory } from 'react-router-dom'
+
+
+const mapStateToProps = state => {
+    console.log(state.User_REDUCER.userList)
+    return {
+        GETUSERS: state.User_REDUCER.userList,
+    }
+
+}
+const mapDispatchToProps = Dispatch => {
+    return {
+        GETDATA: () => Dispatch(getData())
+    }
+}
 
 // const mapDispatchToProps = Dispatch => {
 //     return {
-//       Edituser: (data) => Dispatch(EditFormData(data)),
-      
+//         DELETEDATA: () => Dispatch(deleteFormData())
 //     }
-// const mapDispatchToProps = Dispatch => {
-//     return {
-//       Deleteuser: (data) => Dispatch(DeleteFormData(data)),
-      
-//     }
+// }
 
 function User(props) {
-    const [users, setUser] = useState([])
-  useEffect(() => {
-        loadUser();
-        return () => {
-            console.log("unmounting")
-        }
-    }, [])
+    let history = useHistory();
 
-    const loadUser = async () => {
-        await axios.get("http://localhost:3001/formdata/getData")
-            .then((res) => {
-                console.log('home data', res)
-                const allData = res.data.formdata
-                setUser(allData)
-            })
-            .catch((err) => { console.log(err) })
+
+    const getdata = () => {
+        props.GETDATA();
     }
-    console.log(users)
+//   const deleteData=()=>{
+//       props.DELETEDATA()
 
+//   }
+ 
+    //table
     const renderTable = () => {
-        return (
-            // console.log("hello",users)
-            users.map((user => {
-                return (
-                    <tr>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        {/* <button onClick={()=>()=>EditFormData}>edit</button>
-                        <button onClick={()=>DeleteFormData}>delete</button> */}
-                    </tr>
-                )
-            }))
-        )
+
+        return props.GETUSERS.map((user) => {
+            return (
+                <tr>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    {/* <td><button onClick={deleteData}>delete</button></td> */}     
+                      </tr>
+            )
+        })
     }
     return (
         <div >
             <Navbar />
-            {/* <button onClick={renderTable}>click</button>  */}
 
+            <div>
+                <button onClick={getdata}>getData</button>
+
+
+                {/* <button onClick={AddNewUser}>AddNewUser</button> */}
+                <button color="black" onClick={() => history.push("/")}> Logout</button>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
-
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
-                     
                     </tr>
                 </thead>
                 <tbody>
@@ -72,4 +78,4 @@ function User(props) {
     )
 }
 
-export default User
+export default connect(mapStateToProps, mapDispatchToProps)(User)
